@@ -39,7 +39,11 @@ class NotificationPayload
         $instance->cancellationDateMs = $request->input('cancellation_date_ms');
         $instance->webOrderLineItemId = $request->input('web_order_line_item_id');
         $instance->latestReceipt = $request->input('latest_receipt');
-        $instance->latestReceiptInfo = Receipt::createFromArray($request->input('latest_receipt_info'));
+        if ($request->has('latest_receipt_info')) {
+            $instance->latestReceiptInfo = Receipt::createFromArray($request->input('latest_receipt_info'));
+        } else {
+            $instance->latestReceiptInfo = null;
+        }
         $instance->latestExpiredReceipt = $request->input('latest_expired_receipt');
         if ($request->has('latest_expired_receipt_info')) {
             $instance->latestExpiredReceiptInfo = Receipt::createFromArray($request->input('latest_expired_receipt_info'));
