@@ -7,6 +7,7 @@ use Appvise\AppStoreNotifications\Model\NotificationType;
 use Appvise\AppStoreNotifications\Model\AppleNotification;
 use Appvise\AppStoreNotifications\Exceptions\WebhookFailed;
 use Appvise\AppStoreNotifications\Model\NotificationPayload;
+use Illuminate\Support\Facades\Log;
 
 class WebhooksController
 {
@@ -15,7 +16,12 @@ class WebhooksController
         $jobConfigKey = NotificationType::{$request->input('notification_type')}();
         $this->determineValidRequest($request->input('password'));
 
-        AppleNotification::storeNotification($jobConfigKey, $request->input());
+        $notificationId = AppleNotification::storeNotification($jobConfigKey, $request->input());
+
+        // FIXME: rjgonzale, why is the latest receipt null? this is for debugging
+        if (!$request->has('latest_receipt_info')) {
+            Log::error("Notification with id " . $notificationId . " does not have latest_receipt_info");
+        }
 
         $payload = NotificationPayload::createFromRequest($request);
 
