@@ -18,11 +18,6 @@ class WebhooksController
 
         $notificationId = AppleNotification::storeNotification($jobConfigKey, $request->input());
 
-        // FIXME: rjgonzale, why is the latest receipt null? this is for debugging
-        if (!$request->has('latest_receipt_info')) {
-            Log::error("Notification with id " . $notificationId . " does not have latest_receipt_info");
-        }
-
         $payload = NotificationPayload::createFromRequest($request);
 
         $jobClass = config("appstore-server-notifications.jobs.{$jobConfigKey}", null);
