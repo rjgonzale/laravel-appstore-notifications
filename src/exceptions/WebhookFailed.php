@@ -8,7 +8,7 @@ class WebhookFailed extends Exception
 {
     public static function nonValidRequest()
     {
-        return new static("Your shared secret does not match password in Apple's request", 400);
+        return new static("Your shared secret does not match password in Apple's request", 500);
     }
 
     public static function jobClassDoesNotExist(string $jobClass)

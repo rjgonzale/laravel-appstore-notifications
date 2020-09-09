@@ -14,9 +14,10 @@ class WebhooksController
     public function __invoke(Request $request)
     {
         $jobConfigKey = NotificationType::{$request->input('notification_type')}();
-        $this->determineValidRequest($request->input('password'));
 
-        $notificationId = AppleNotification::storeNotification($jobConfigKey, $request->input());
+        AppleNotification::storeNotification($jobConfigKey, $request->input());
+
+        //$this->determineValidRequest($request->input('password'));
 
         $payload = NotificationPayload::createFromRequest($request);
 
