@@ -28,6 +28,43 @@ class NotificationPayload
     {
     }
 
+    public static function createFromArray($notification) {
+        $instance = new self();
+        $instance->environment = $notification('environment');
+        $instance->password = $notification('password');
+        $instance->notificationType = $notification('notification_type');
+        $instance->cancellationDate = $notification('cancellation_date');
+        $instance->cancellationDatePst = $notification('cancellation_date_pst');
+        $instance->cancellationDateMs = $notification('cancellation_date_ms');
+        $instance->webOrderLineItemId = $notification('web_order_line_item_id');
+        $instance->latestReceipt = $notification('latest_receipt');
+        if (isset($notification['latest_receipt_info'])) {
+            $instance->latestReceiptInfo = Receipt::createFromArray($notification('latest_receipt_info'));
+        } else {
+            $instance->latestReceiptInfo = null;
+        }
+        $instance->latestExpiredReceipt = $notification('latest_expired_receipt');
+        if (isset($notification['latest_expired_receipt_info'])) {
+            $instance->latestExpiredReceiptInfo = Receipt::createFromArray($notification('latest_expired_receipt_info'));
+        } else {
+            $instance->latestExpiredReceiptInfo = null;
+        }
+        $instance->autoRenewStatus = $notification('auto_renew_status');
+        $instance->autoRenewProductId = $notification('auto_renew_product_id');
+        $instance->autoRenewStatusChangeDate = $notification('auto_renew_status_change_date');
+        $instance->autoRenewStatusChangeDatePst = $notification('auto_renew_status_change_date_pst');
+        $instance->autoRenewStatusChangeDateMs = $notification('auto_renew_status_change_date_ms');
+        if (isset($notification['pending_renewal_info'])) {
+            foreach ($notification('pending_renewal_info') as $pendingRenewalInfo) {
+                $instance->pendingRenewalInfo[] = RenewalInfo::createFromRequest($pendingRenewalInfo);
+            }
+        } else {
+            $instance->pendingRenewalInfo = null;
+        }
+
+        return $instance;
+    }
+
     public static function createFromRequest(Request $request)
     {
         $instance = new self();
