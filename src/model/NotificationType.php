@@ -15,4 +15,5 @@ class NotificationType extends Enum
     const DID_FAIL_TO_RENEW = 'did_fail_to_renew';
     const DID_RECOVER = 'did_recover'; // replaces RENEWAL
     const PRICE_INCREASE_CONSENT = 'price_increase_consent';
+    const DID_RENEW = 'did_renew';
 }
